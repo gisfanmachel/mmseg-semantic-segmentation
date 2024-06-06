@@ -13,6 +13,7 @@ mask_paths = glob.glob(os.path.join(MASKS_DIR, "*.tif"))
 palette = [[128, 128, 128], [129, 127, 38], [120, 69, 125], [53, 125, 34],
            [0, 11, 123], [118, 20, 12], [122, 81, 25], [241, 134, 51]]
 
+# 将单波段灰度图变成RGB图
 for i, mask_path in enumerate(mask_paths):
     mask_filename = os.path.splitext(os.path.basename(mask_path))[0]
 
