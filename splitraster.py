@@ -43,6 +43,7 @@ mask_paths.sort()
 os.makedirs(OUTPUT_IAMGES_DIR)
 os.makedirs(OUTPUT_LABELS_DIR)
 os.makedirs(OUTPUT_SPLITS_DIR)
+# 按照指定大小将大图裁切成小图
 for i, (img_path, mask_path) in enumerate(zip(img_paths, mask_paths)):
     img_filename = os.path.splitext(os.path.basename(img_path))[0]
     mask_filename = os.path.splitext(os.path.basename(mask_path))[0]
