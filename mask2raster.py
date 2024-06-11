@@ -1,24 +1,30 @@
 import glob
 import os
+
+import cv2
 import numpy as np
 from PIL import Image
-import cv2
-import rasterio
-from rasterio.plot import show
-from osgeo import gdal
 
-MASKS_DIR = os.path.join(os.getcwd(),"masks")
-OUTPUT_DIR =os.path.join(os.getcwd(),"masks2")
+# 将单波段灰度图变成RGB图
+
+# import rasterio
+# from rasterio.plot import show
+# from osgeo import gdal
+BASE_DIR=r"F:\BaiduNetdiskDownload\landcover.ai.v1"
+# 单波段tif
+MASKS_DIR = os.path.join(BASE_DIR, "masks")
+# 单波段tif的rgb颜色png
+OUTPUT_DIR = os.path.join(BASE_DIR, "masks2")
 mask_paths = glob.glob(os.path.join(MASKS_DIR, "*.tif"))
 palette = [[128, 128, 128], [129, 127, 38], [120, 69, 125], [53, 125, 34],
            [0, 11, 123], [118, 20, 12], [122, 81, 25], [241, 134, 51]]
 
-# 将单波段灰度图变成RGB图
+
 for i, mask_path in enumerate(mask_paths):
     mask_filename = os.path.splitext(os.path.basename(mask_path))[0]
 
     # seg_map = np.loadtxt(osp.join(data_root, ann_dir, file)).astype(np.uint8)
-    seg_map=cv2.imdecode(np.fromfile(mask_path, dtype=np.uint8), -1)
+    seg_map = cv2.imdecode(np.fromfile(mask_path, dtype=np.uint8), -1)
     seg_img = Image.fromarray(seg_map).convert('P')
     seg_img.putpalette(np.array(palette, dtype=np.uint8))
     out_mask_path = os.path.join(OUTPUT_DIR, "{}.png".format(mask_filename))
@@ -71,8 +77,6 @@ for i, mask_path in enumerate(mask_paths):
     #     dst.write(new_bands, indexes=2)  # 写入数据，indexes=2 表示写入第二个波段
     #     dst.write(new_bands, indexes=3)  # 写入数据，indexes=3 表示写入第三个波段
 
-
-
     # # 打开单波段TIFF文件
     # src_ds = gdal.Open(mask_path, gdal.GA_ReadOnly)
     # if src_ds is None:
@@ -119,5 +123,3 @@ for i, mask_path in enumerate(mask_paths):
     # # 清理
     # src_ds = None
     # out_ds = None
-
-

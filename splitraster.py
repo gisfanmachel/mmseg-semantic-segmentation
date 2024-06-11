@@ -5,16 +5,15 @@ import os
 
 import cv2
 
+# 分割样本小图,train和val放在同一目录，通过split文件来区分
 current_number = 1
+
 
 def get_next_seven_digit_number():
     global current_number
     next_number = current_number
     current_number += 1
     return f"{next_number:07}"
-
-
-
 
 
 # ...每次调用都会增加1，并格式化为7位数字字符串
@@ -24,12 +23,13 @@ def write_list_to_file(file_path, list_data):
             file.write(temp + "\n")
 
 
-IMGS_DIR = "./images"
-MASKS_DIR = "./masks2"
-OUTPUT_NAME = "output5"
-OUTPUT_IAMGES_DIR = "./{}/images".format(OUTPUT_NAME)
-OUTPUT_LABELS_DIR = "./{}/labels".format(OUTPUT_NAME)
-OUTPUT_SPLITS_DIR = "./{}/splits".format(OUTPUT_NAME)
+BASE_DIR = r"F:\BaiduNetdiskDownload\landcover.ai.v1"
+IMGS_DIR = os.path.join(BASE_DIR, "images")
+MASKS_DIR = os.path.join(BASE_DIR, "images2")
+OUTPUT_NAME = os.path.join(BASE_DIR, "output5")
+OUTPUT_IAMGES_DIR = os.path.join(OUTPUT_NAME, "images")
+OUTPUT_LABELS_DIR = os.path.join(OUTPUT_NAME, "labels")
+OUTPUT_SPLITS_DIR = os.path.join(OUTPUT_NAME, "splits")
 
 TARGET_SIZE_X = 2048
 TARGET_SIZE_Y = 1024
@@ -43,8 +43,19 @@ mask_paths.sort()
 os.makedirs(OUTPUT_IAMGES_DIR)
 os.makedirs(OUTPUT_LABELS_DIR)
 os.makedirs(OUTPUT_SPLITS_DIR)
+
+train_radio = 0.8
+val_radio = 0.2
+test_radio = 0.0
+# 按照上面的比例，对img_paths和mask_paths进行分割
+
+train_img_paths, val_img_paths, test_img_paths = img_paths[int(len(img_paths) * train_radio):int(
+    len(img_paths) * (train_radio + val_radio))], img_paths[int(len(img_paths) * (train_radio + val_radio)):int(
+    len(img_paths) * (train_radio + val_radio + test_radio))], img_paths[:int(len(img_paths) * train_radio)]
+
 # 按照指定大小将大图裁切成小图
 for i, (img_path, mask_path) in enumerate(zip(img_paths, mask_paths)):
+
     img_filename = os.path.splitext(os.path.basename(img_path))[0]
     mask_filename = os.path.splitext(os.path.basename(mask_path))[0]
     img = cv2.imread(img_path)
@@ -59,7 +70,7 @@ for i, (img_path, mask_path) in enumerate(zip(img_paths, mask_paths)):
             mask_tile = mask[y:y + TARGET_SIZE_Y, x:x + TARGET_SIZE_X]
 
             if img_tile.shape[0] == TARGET_SIZE_Y and img_tile.shape[1] == TARGET_SIZE_X:
-                filename=get_next_seven_digit_number()
+                filename = get_next_seven_digit_number()
                 out_img_path = os.path.join(OUTPUT_IAMGES_DIR, "{}.jpg".format(filename))
                 cv2.imwrite(out_img_path, img_tile)
 
@@ -84,7 +95,7 @@ split_point = int(len(filenames) * 0.8)
 # 按比例拆分文件名列表
 train_filenames = filenames[:split_point]
 val_filenames = filenames[split_point:]
-write_list_to_file(os.path.join("./{}/splits/train.txt".format(OUTPUT_NAME)),
+write_list_to_file(os.path.join(OUTPUT_SPLITS_DIR, "train.txt"),
                    [train_filename.split(".")[0] for train_filename in train_filenames])
-write_list_to_file(os.path.join("./{}/splits/val.txt".format(OUTPUT_NAME)),
+write_list_to_file(os.path.join(OUTPUT_SPLITS_DIR, "val.txt"),
                    [val_filename.split(".")[0] for val_filename in val_filenames])
