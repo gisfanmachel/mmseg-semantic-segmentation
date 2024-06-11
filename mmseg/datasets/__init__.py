@@ -1,5 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 # yapf: disable
+from .LandcoverDataset import LandcoverDataset
+from .ZihaoDataset import ZihaoDataset
 from .ade import ADE20KDataset
 from .basesegdataset import BaseCDDataset, BaseSegDataset
 from .bdd100k import BDD100KDataset
@@ -25,7 +27,6 @@ from .potsdam import PotsdamDataset
 from .refuge import REFUGEDataset
 from .stare import STAREDataset
 from .synapse import SynapseDataset
-from .ZihaoDataset import ZihaoDataset
 # yapf: disable
 from .transforms import (CLAHE, AdjustGamma, Albu, BioMedical3DPad,
                          BioMedical3DRandomCrop, BioMedical3DRandomFlip,
@@ -61,5 +62,5 @@ __all__ = [
     'MapillaryDataset_v2', 'Albu', 'LEVIRCDDataset',
     'LoadMultipleRSImageFromFile', 'LoadSingleRSImageFromFile',
     'ConcatCDInput', 'BaseCDDataset', 'DSDLSegDataset', 'BDD100KDataset',
-    'NYUDataset', 'ZihaoDataset'
+    'NYUDataset', 'ZihaoDataset', 'LandcoverDataset'
 ]

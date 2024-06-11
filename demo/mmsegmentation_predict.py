@@ -131,10 +131,15 @@ from mmseg.apis import init_model, inference_model, show_result_pyplot
 
 # Init the model from the config and the checkpoint
 checkpoint_path = '../work_dirs/tutorial/iter_200.pth'
-checkpoint_path='../work_dirs/scene_mmseg_v1-semseg-pspnet_mask2/iter_200.pth'
+checkpoint_path = '../work_dirs/scene_mmseg_v1-semseg-pspnet_mask2/iter_200.pth'
+
+# checkpoint_path="../watermelon_best_mIoU_iter_29000.pth"
+# cfg = Config.fromfile('../Zihao-Configs/ZihaoDataset_PSPNet_20230818.py')
+
 model = init_model(cfg, checkpoint_path, 'cuda:0')
 
 img_path = '6000035.jpg'
+# img_path="watermelon_test1.jpg"
 img = mmcv.imread(img_path)
 result = inference_model(model, img)
 
