@@ -95,7 +95,7 @@ for i, (img_path, mask_path) in enumerate(zip(img_paths, mask_paths)):
     img_filename = os.path.splitext(os.path.basename(img_path))[0]
     mask_filename = os.path.splitext(os.path.basename(mask_path))[0]
     img = cv2.imread(img_path)
-    mask = cv2.imread(mask_path)
+    mask = cv2.imread(mask_path,0)
 
     assert img_filename == mask_filename and img.shape[:2] == mask.shape[:2]
 
@@ -104,6 +104,7 @@ for i, (img_path, mask_path) in enumerate(zip(img_paths, mask_paths)):
         for x in range(0, img.shape[1], TARGET_SIZE_X):
             img_tile = img[y:y + TARGET_SIZE_Y, x:x + TARGET_SIZE_X]
             mask_tile = mask[y:y + TARGET_SIZE_Y, x:x + TARGET_SIZE_X]
+            # mask_tile = mask[y:y + TARGET_SIZE_Y, x:x + TARGET_SIZE_X][:,:,0]
 
             if img_tile.shape[0] == TARGET_SIZE_Y and img_tile.shape[1] == TARGET_SIZE_X:
                 filename = get_next_seven_digit_number()
