@@ -104,7 +104,6 @@ for i, (img_path, mask_path) in enumerate(zip(img_paths, mask_paths)):
         for x in range(0, img.shape[1], TARGET_SIZE_X):
             img_tile = img[y:y + TARGET_SIZE_Y, x:x + TARGET_SIZE_X]
             mask_tile = mask[y:y + TARGET_SIZE_Y, x:x + TARGET_SIZE_X]
-            # mask_tile = mask[y:y + TARGET_SIZE_Y, x:x + TARGET_SIZE_X][:,:,0]
 
             if img_tile.shape[0] == TARGET_SIZE_Y and img_tile.shape[1] == TARGET_SIZE_X:
                 filename = get_next_seven_digit_number()
