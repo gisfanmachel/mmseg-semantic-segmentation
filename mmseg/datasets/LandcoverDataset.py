@@ -7,8 +7,9 @@ from .basesegdataset import BaseSegDataset
 class LandcoverDataset(BaseSegDataset):
     # 类别和对应的 RGB配色
     METAINFO = {
-        'classes': ['background', 'red', 'green', 'white', 'seed-black', 'seed-white'],
-        'palette': [[127, 127, 127], [200, 0, 0], [0, 200, 0], [144, 238, 144], [30, 30, 30], [251, 189, 8]]
+        'classes': ['backgroud', 'building', 'forest', 'water', 'road'],
+        'palette': [[128, 128, 128], [129, 127, 38], [120, 69, 125], [53, 125, 34],
+                [0, 11, 123]]
     }
 
     # 指定图像扩展名、标注扩展名
