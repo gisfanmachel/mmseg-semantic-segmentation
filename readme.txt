@@ -17,4 +17,18 @@ python tools/train.py Zihao-Configs/ZihaoDataset_PSPNet_20230818.py --work-dir w
 
 python tools/train.py Zihao-Configs/LandcoverDataset_PSPNet_20240611.py --work-dir work_dirs/LandcoverDataset_PSPNet_20240611
 
+
+python tools/train.py Zihao-Configs/LandcoverDataset_DeepLabV3plus_20240624.py --work-dir work_dirs/LandcoverDataset_DeepLabV3plus_20240624
+
+python tools/train.py Zihao-Configs/LandcoverDataset_FastSCNN_20240624.py --work-dir work_dirs/LandcoverDataset_FastSCNN_20240624
+
+
+python tools/train.py Zihao-Configs/LandcoverDataset_KNet_20240624.py --work-dir work_dirs/LandcoverDataset_KNet_20240624
+
+python tools/train.py Zihao-Configs/LandcoverDataset_Mask2Former_20240624.py --work-dir work_dirs/LandcoverDataset_Mask2Former_20240624
+
+python tools/train.py Zihao-Configs/LandcoverDataset_Segformer_20240624.py --work-dir work_dirs/LandcoverDataset_Segformer_20240624
+
+python tools/train.py Zihao-Configs/LandcoverDataset_UNet_20240624.py --work-dir work_dirs/LandcoverDataset_UNet_20240624
+
 推理
