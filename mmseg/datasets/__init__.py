@@ -2,6 +2,7 @@
 # yapf: disable
 from .LandcoverDataset import LandcoverDataset
 from .ZihaoDataset import ZihaoDataset
+from .PhotovoltaicPanelDataset import PhotovoltaicPanelDataset
 from .ade import ADE20KDataset
 from .basesegdataset import BaseCDDataset, BaseSegDataset
 from .bdd100k import BDD100KDataset
@@ -62,5 +63,5 @@ __all__ = [
     'MapillaryDataset_v2', 'Albu', 'LEVIRCDDataset',
     'LoadMultipleRSImageFromFile', 'LoadSingleRSImageFromFile',
     'ConcatCDInput', 'BaseCDDataset', 'DSDLSegDataset', 'BDD100KDataset',
-    'NYUDataset', 'ZihaoDataset', 'LandcoverDataset'
+    'NYUDataset', 'ZihaoDataset', 'LandcoverDataset','PhotovoltaicPanelDataset'
 ]
