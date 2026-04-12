@@ -11,9 +11,9 @@ import os
 os.environ['TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD'] = '1'
 
 # ===================== 【配置参数】 =====================
-# zgf segformer训练结果
-# CONFIG_PATH = r'D:\系统开发\AI\AI_Study\图像分割\mmseg\mmseg-semantic-segmentation\zgf\光伏\spvguangfu.py'
-# CHECKPOINT_PATH = r'D:\系统开发\AI\AI_Study\图像分割\mmseg\mmseg-semantic-segmentation\zgf\光伏\best_mIoU_iter_553040.pth'
+# zgf deeplabv3plus训练
+CONFIG_PATH = r'D:\系统开发\AI\AI_Study\图像分割\mmseg\mmseg-semantic-segmentation\zgf\光伏\spvguangfu.py'
+CHECKPOINT_PATH = r'D:\系统开发\AI\AI_Study\图像分割\mmseg\mmseg-semantic-segmentation\zgf\光伏\best_mIoU_iter_553040.pth'
 
 
 # CHECKPOINT_PATH=r'D:\系统开发\AI\AI_Study\图像分割\mmseg\mmseg-semantic-segmentation\work_dirs\photovoltaic_panel_mmseg_v1-semseg-pspnet_mask\20260407_145007train\best_aAcc_epoch_10.pth'
@@ -29,11 +29,15 @@ os.environ['TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD'] = '1'
 # CONFIG_PATH = r'E:\AI\train_result\mmseg\guangfu\20260408_191415\photovoltaic_panel_mmseg_v1-semseg-segformer_mask.py'
 
 # cxw deeplabv3plus训练结果
+# CHECKPOINT_PATH=r'E:\AI\train_result\mmseg\guangfu\20260409_092725\best_mIoU_iter_34500.pth'
+# CONFIG_PATH=r'E:\AI\train_result\mmseg\guangfu\20260409_092725\photovoltaic_panel_mmseg_v1-semseg-deeplabv3plus_mask.py'
+
 # cxw fastscnn训练结果
-CHECKPOINT_PATH = r'E:\AI\train_result\mmseg\guangfu\20260409_133937\best_mIoU_iter_29000.pth'
-CONFIG_PATH = r'E:\AI\train_result\mmseg\guangfu\20260409_133937\photovoltaic_panel_mmseg_v1-semseg-fastscnn_mask.py'
+# CHECKPOINT_PATH = r'E:\AI\train_result\mmseg\guangfu\20260409_133937\best_mIoU_iter_29000.pth'
+# CONFIG_PATH = r'E:\AI\train_result\mmseg\guangfu\20260409_133937\photovoltaic_panel_mmseg_v1-semseg-fastscnn_mask.py'
 
 # cxw knet训练结果
+
 # cxw mask2former训练结果
 
 # cxw unet训练结果

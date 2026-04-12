@@ -3,6 +3,9 @@
 from .LandcoverDataset import LandcoverDataset
 from .ZihaoDataset import ZihaoDataset
 from .PhotovoltaicPanelDataset import PhotovoltaicPanelDataset
+from .BuildingDataset import BuildingDataset
+from .RoadDataset import RoadDataset
+from .WaterDataset import WaterDataset
 from .ade import ADE20KDataset
 from .basesegdataset import BaseCDDataset, BaseSegDataset
 from .bdd100k import BDD100KDataset
