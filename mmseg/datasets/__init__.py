@@ -1,6 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 # yapf: disable
 from .LandcoverDataset import LandcoverDataset
+from .GreenhouseDataset import GreenhouseDataset
+from .VegetationDataset import VegetationDataset
 from .ZihaoDataset import ZihaoDataset
 from .PhotovoltaicPanelDataset import PhotovoltaicPanelDataset
 from .BuildingDataset import BuildingDataset
@@ -66,5 +68,5 @@ __all__ = [
     'MapillaryDataset_v2', 'Albu', 'LEVIRCDDataset',
     'LoadMultipleRSImageFromFile', 'LoadSingleRSImageFromFile',
     'ConcatCDInput', 'BaseCDDataset', 'DSDLSegDataset', 'BDD100KDataset',
-    'NYUDataset', 'ZihaoDataset', 'LandcoverDataset','PhotovoltaicPanelDataset'
+    'NYUDataset', 'ZihaoDataset', 'LandcoverDataset','PhotovoltaicPanelDataset','VegetationDataset','GreenhouseDataset'
 ]

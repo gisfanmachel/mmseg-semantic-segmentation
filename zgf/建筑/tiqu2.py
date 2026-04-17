@@ -8,11 +8,14 @@ import os
 os.environ['TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD'] = '1'
 # ===================== 【配置参数】 =====================
 # zgf-deeplabv3plus训练
-# CONFIG_PATH = r'D:\系统开发\AI\AI_Study\图像分割\mmseg\mmseg-semantic-segmentation\zgf\建筑\buildconfig2.py'
-# CHECKPOINT_PATH = r'D:\系统开发\AI\AI_Study\图像分割\mmseg\mmseg-semantic-segmentation\zgf\建筑\best_mIoU_iter_388240.pth'
+CONFIG_PATH = r'D:\系统开发\AI\AI_Study\图像分割\mmseg\mmseg-semantic-segmentation\zgf\建筑\buildconfig2.py'
+CHECKPOINT_PATH = r'D:\系统开发\AI\AI_Study\图像分割\mmseg\mmseg-semantic-segmentation\zgf\建筑\best_mIoU_iter_388240.pth'
+
 # cxw-segformer训练
-CHECKPOINT_PATH=r'E:\AI\train_result\mmseg\building\20260412_011314\best_mIoU_iter_38000.pth'
-CONFIG_PATH=r'E:\AI\train_result\mmseg\building\20260412_011314\building_mmseg_v1-semseg-segformer_mask.py'
+# CHECKPOINT_PATH=r'E:\AI\train_result\mmseg\building\20260412_235257\best_mIoU_iter_37000.pth'
+# CONFIG_PATH=r'E:\AI\train_result\mmseg\building\20260412_235257\building_mmseg_v1-semseg-deeplabv3plus_mask.py'
+
+#
 
 IMAGE_DIR = r'D:\系统开发\AI\AI_Study\图像分割\mmseg\mmseg-semantic-segmentation\zgf\建筑\ceshitupian\build'
 OUTPUT_DIR = r'D:\系统开发\AI\AI_Study\图像分割\mmseg\mmseg-semantic-segmentation\zgf\建筑\save_ceshi'
