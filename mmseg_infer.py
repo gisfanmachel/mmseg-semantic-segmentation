@@ -127,7 +127,7 @@ def clear_output_dir(out_dir):
 
 
 def collect_images(img_path):
-    """收集图片列表"""
+    """收集图片列表（自动去重）"""
     if os.path.isfile(img_path):
         return [img_path]
 
@@ -136,8 +136,18 @@ def collect_images(img_path):
     files = []
     for pat in patterns:
         files.extend(glob.glob(os.path.join(img_path, pat)))
-        files.extend(glob.glob(os.path.join(img_path, pat.upper())))
-    return sorted(files)
+        # Windows 下 .tif/.tiff 实际是同一类型，跳过大写匹配避免重复
+        if not pat.endswith(('.tif', '.tiff')):
+            files.extend(glob.glob(os.path.join(img_path, pat.upper())))
+    # 按绝对路径去重（Windows 下 .tif/.tiff 视为同一文件）
+    seen = set()
+    unique = []
+    for f in files:
+        ab = os.path.abspath(f)
+        if ab not in seen:
+            seen.add(ab)
+            unique.append(f)
+    return sorted(unique)
 
 
 def main():
@@ -218,18 +228,10 @@ def main():
     print('推理器初始化完成')
 
     # ========== 5. 清空并创建输出目录 ==========
-    clear_output_dir(args.out)
-    vis_dir   = os.path.join(args.out, 'vis')
-    mask_dir  = os.path.join(args.out, 'mask')
-    merged_dir = os.path.join(args.out, 'merged')
-
-    # mask 目录始终创建（inferencer 会写入 pred_out_dir='mask'）
-    os.makedirs(mask_dir, exist_ok=True)
-    if args.save_vis:
-        os.makedirs(vis_dir, exist_ok=True)
-    if args.save_merged:
-        os.makedirs(merged_dir, exist_ok=True)
-    os.makedirs(args.out, exist_ok=True)
+    if os.path.exists(args.out):
+        shutil.rmtree(args.out)
+    os.makedirs(os.path.join(args.out, 'vis'), exist_ok=True)
+    os.makedirs(os.path.join(args.out, 'mask'), exist_ok=True)
 
     # ========== 6. 分批次推理 ==========
     total = len(image_list)
@@ -242,68 +244,19 @@ def main():
         print(f'处理第 {batch_num}/{batch_total} 批 ({len(batch_imgs)} 张)...')
 
         with autocast_ctx:
-            results = inferencer(
+            # 完全依赖 inferencer 内部写入：vis -> {out}/vis/，mask -> {out}/mask/
+            inferencer(
                 batch_imgs,
                 batch_size=args.batch_size,
                 out_dir=args.out,
-                show=args.show,
+                show=False,
                 wait_time=0,
                 img_out_dir='vis',
                 pred_out_dir='mask',
-                return_vis=args.save_vis or args.save_merged,
-                return_datasamples=True,
+                return_vis=False,
+                return_datasamples=False,
                 with_labels=False
             )
-
-        # 处理每张结果（兼容：新版inferencer返回单个SegDataSample，老版返回列表）
-        results_list = results if isinstance(results, (list, tuple)) else [results]
-        for idx, (img_path, result) in enumerate(zip(batch_imgs, results_list)):
-            img_name = Path(img_path).stem
-            print(f'  [{batch_num}/{batch_total}] {img_name} 完成')
-
-            # ---- 保存分割掩码（PixelData.numpy() 已是 2D 数组，无须 [0]）----
-            pred_seg = getattr(result, 'pred_sem_seg', None)
-            if pred_seg is not None:
-                mask_arr = pred_seg.cpu().numpy().astype(np.uint8)
-                mask_path = os.path.join(mask_dir, f'{img_name}_mask.png')
-                cv2.imwrite(mask_path, mask_arr)
-                print(f'    -> 掩码: {mask_path}')
-
-            # 保存可视化图
-            if args.save_vis and result.get('visualization'):
-                vis_list = result['visualization'] if isinstance(result['visualization'], (list, tuple)) else [result['visualization']]
-                vis = vis_list[0] if vis_list else None
-                if vis is not None:
-                    vis_path = os.path.join(vis_dir, f'{img_name}_vis.png')
-                    if isinstance(vis, torch.Tensor):
-                        vis = vis.cpu().numpy()
-                    if len(vis.shape) == 3 and vis.shape[0] in [3, 1]:
-                        vis = vis.transpose(1, 2, 0)
-                    cv2.imwrite(vis_path, vis)
-                    print(f'    -> 可视化: {vis_path}')
-
-            # 保存叠加融合图
-            if args.save_merged:
-                orig = cv2.imread(img_path)
-                if orig is None:
-                    print(f'    警告: 无法读取原图 {img_path}')
-                    continue
-                datasample = result.get('data_samples', [None] * len(batch_imgs))
-                if datasample and datasample[0] is not None:
-                    # 从datasample中获取pred_mask
-                    ds = datasample[idx] if idx < len(datasample) else datasample[0]
-                    pred_seg = getattr(ds, 'pred_sem_seg', None)
-                    if pred_seg is not None:
-                        mask = pred_seg.cpu().numpy()[0].astype.uint8
-                        if resize_scale:
-                            mask = cv2.resize(mask, (orig.shape[1], orig.shape[0]),
-                                              interpolation=cv2.INTER_NEAREST)
-                        colored_mask = cv2.applyColorMap(
-                            (mask * 200 % 256).astype(np.uint8), cv2.COLORMAP_JET)
-                        merged = cv2.addWeighted(orig, 1 - args.opacity,
-                                                 colored_mask, args.opacity, 0)
-                        merged_path = os.path.join(merged_dir, f'{img_name}_merged.png')
-                        cv2.imwrite(merged_path, merged)
 
         # 清理GPU缓存
         if 'cuda' in device:
@@ -316,12 +269,8 @@ def main():
     print('推理完成!')
     print(f'  图片总数: {total}')
     print(f'  输出目录: {args.out}')
-    if args.save_vis:
-        print(f'  可视化图: {vis_dir}')
-    if args.save_mask:
-        print(f'  掩码图:   {mask_dir}')
-    if args.save_merged:
-        print(f'  叠加图:   {merged_dir}')
+    print(f'  可视化图: {os.path.join(args.out, "vis")}')
+    print(f'  掩码图:   {os.path.join(args.out, "mask")}')
     print('=' * 60)
 
 
